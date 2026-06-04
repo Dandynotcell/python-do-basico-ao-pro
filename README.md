@@ -19,6 +19,7 @@ Transformar um roadmap de estudos em uma experiência prática, com aulas clicá
 - Plano de 24 semanas.
 - Projetos de portfólio.
 - Biblioteca de fontes, documentações e livros.
+- Seção de feedback e avaliação via Google Forms.
 
 ## Tecnologias
 
@@ -53,6 +54,12 @@ Abra o arquivo `index.html` no navegador.
 - [Docker](https://docs.docker.com/get-started/)
 - [OWASP Top Ten](https://owasp.org/www-project-top-ten/)
 - [Pro Git Book](https://git-scm.com/book/en/v2)
+
+## Feedback
+
+Sugestões, avaliações e comentários são bem-vindos:
+
+[Enviar feedback sobre o roadmap](https://docs.google.com/forms/d/e/1FAIpQLSfV41Nlzi436gPMVA-AkZjGPrVnfUmSdxnL475chB-TZUlI7Q/viewform?usp=publish-editor)
 
 ## Status
 

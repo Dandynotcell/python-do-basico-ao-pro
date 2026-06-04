@@ -148,6 +148,41 @@
     margin-top: 12px;
   }
 
+  .feedback {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 18px;
+    align-items: center;
+    margin: 14px 0 0;
+    padding: 18px;
+    background: rgba(23, 29, 37, 0.78);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .feedback h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+  }
+
+  .feedback p {
+    margin: 0;
+    color: var(--soft);
+    line-height: 1.7;
+  }
+
+  .stars {
+    color: var(--amber);
+    font-size: 26px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .feedback-action {
+    text-align: right;
+  }
+
   .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -468,12 +503,13 @@
   .empty { color: var(--soft); padding: 24px; text-align: center; }
 
   @media (max-width: 900px) {
-    .hero, .layout, .modal-grid, .creator { grid-template-columns: 1fr; }
+    .hero, .layout, .modal-grid, .creator, .feedback { grid-template-columns: 1fr; }
     .sidebar { position: static; max-height: none; }
     .lesson-grid, .cards, .resource-list { grid-template-columns: 1fr; }
     .module-head { display: block; }
     .week { grid-template-columns: 1fr; }
     .creator img { width: 96px; height: 96px; }
+    .feedback-action { text-align: left; }
   }
 </style>
 </head>
@@ -511,6 +547,23 @@
         <a class="pill" href="https://github.com/Dandynotcell" target="_blank" rel="noopener">GitHub</a>
         <a class="pill" href="https://dandynotcell.github.io/python-do-basico-ao-pro/" target="_blank" rel="noopener">Projeto online</a>
       </div>
+    </div>
+  </section>
+
+  <section class="feedback" aria-label="Feedback e avaliação">
+    <div>
+      <div class="eyebrow">// Feedback</div>
+      <h2>Avalie este roadmap</h2>
+      <p>
+        Sua opinião ajuda a melhorar este projeto e a minha jornada como estudante de Python e IA.
+        Deixe uma nota, um comentário ou uma sugestão para a próxima versão.
+      </p>
+    </div>
+    <div class="feedback-action">
+      <div class="stars" aria-hidden="true">★★★★★</div>
+      <a class="primary-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfV41Nlzi436gPMVA-AkZjGPrVnfUmSdxnL475chB-TZUlI7Q/viewform?usp=publish-editor" target="_blank" rel="noopener">
+        Enviar feedback
+      </a>
     </div>
   </section>
 
