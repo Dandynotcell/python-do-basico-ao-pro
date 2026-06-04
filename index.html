@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python do Básico ao Pró - Curso Interativo</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #12161c;
+    --panel-2: #171d25;
+    --line: #27313d;
+    --text: #e8edf2;
+    --soft: #9aa7b4;
+    --muted: #6e7d8e;
+    --blue: #3ba7ff;
+    --mint: #25d59f;
+    --amber: #ffbf47;
+    --rose: #ff6b7a;
+    --violet: #a78bfa;
+    --code: #090b0f;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      linear-gradient(rgba(39, 49, 61, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(39, 49, 61, 0.18) 1px, transparent 1px),
+      var(--bg);
+    background-size: 36px 36px;
+    color: var(--text);
+    font-family: var(--sans);
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button, input { font: inherit; }
+
+  .app {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 28px 0 48px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+    align-items: end;
+    padding: 26px 0 22px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    color: var(--mint);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 10px 0 12px;
+    font-size: clamp(34px, 7vw, 72px);
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  .lead {
+    max-width: 760px;
+    color: var(--soft);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .stats {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(18, 22, 28, 0.82);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .stat-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--soft);
+  }
+
+  .bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #222a35;
+    overflow: hidden;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--mint), var(--blue), var(--violet));
+    transition: width 240ms ease;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(11, 13, 16, 0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(39, 49, 61, 0.65);
+  }
+
+  .tab, .ghost-btn, .primary-btn {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 13px;
+    color: var(--text);
+    background: var(--panel);
+    cursor: pointer;
+    min-height: 40px;
+  }
+
+  .tab.active {
+    border-color: rgba(59, 167, 255, 0.8);
+    background: rgba(59, 167, 255, 0.12);
+    color: #d7efff;
+  }
+
+  .primary-btn {
+    background: linear-gradient(135deg, #2678d9, #18b98d);
+    border-color: transparent;
+    font-weight: 800;
+  }
+
+  .ghost-btn.danger:hover {
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+
+  .search {
+    flex: 1;
+    min-width: 210px;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    min-height: 40px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 310px minmax(0, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .sidebar, .content-panel {
+    background: rgba(18, 22, 28, 0.78);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .sidebar {
+    padding: 14px;
+    align-self: start;
+    position: sticky;
+    top: 88px;
+    max-height: calc(100vh - 110px);
+    overflow: auto;
+  }
+
+  .module-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+    margin-bottom: 8px;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .module-btn.active {
+    border-color: var(--mint);
+    background: rgba(37, 213, 159, 0.08);
+  }
+
+  .module-btn small {
+    display: block;
+    color: var(--muted);
+    margin-top: 5px;
+    font-family: var(--mono);
+  }
+
+  .content-panel { padding: 20px; min-height: 640px; }
+
+  .module-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: start;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .module-head h2 { margin: 0 0 8px; font-size: 28px; }
+  .module-head p { margin: 0; color: var(--soft); line-height: 1.65; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 9px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--soft);
+    white-space: nowrap;
+  }
+
+  .lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .lesson {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lesson:hover { border-color: rgba(59, 167, 255, 0.75); }
+  .lesson.done { border-color: rgba(37, 213, 159, 0.72); }
+  .lesson h3 { margin: 0; font-size: 18px; }
+  .lesson p { margin: 0; color: var(--soft); line-height: 1.55; font-size: 14px; }
+
+  .lesson-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .tag {
+    display: inline-block;
+    color: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 4px 7px;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .tag.core { color: #a8e8ff; border-color: rgba(59, 167, 255, 0.38); }
+  .tag.project { color: #b7ffdf; border-color: rgba(37, 213, 159, 0.38); }
+  .tag.deep { color: #f0dcff; border-color: rgba(167, 139, 250, 0.4); }
+
+  .panel-section { display: none; }
+  .panel-section.active { display: block; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .info-card {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .info-card h3 { margin: 0 0 10px; }
+  .info-card p, .info-card li { color: var(--soft); line-height: 1.65; }
+  .info-card ul { margin: 0; padding-left: 18px; }
+
+  .timeline {
+    display: grid;
+    gap: 12px;
+  }
+
+  .week {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 14px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .week strong { color: var(--amber); font-family: var(--mono); }
+  .week p { margin: 0; color: var(--soft); line-height: 1.65; }
+
+  .resource-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .resource {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .resource h3 { margin: 0 0 8px; }
+  .resource p { margin: 0 0 10px; color: var(--soft); line-height: 1.6; }
+
+  dialog {
+    width: min(900px, calc(100% - 22px));
+    max-height: calc(100vh - 28px);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--text);
+    padding: 0;
+  }
+
+  dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
+
+  .modal-head {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    background: rgba(18, 22, 28, 0.96);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .modal-head h2 { margin: 0; font-size: 24px; }
+  .modal-body { padding: 20px; }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 18px;
+  }
+
+  .article h3 {
+    margin: 22px 0 8px;
+    color: #dce9f7;
+  }
+
+  .article p, .article li {
+    color: var(--soft);
+    line-height: 1.75;
+  }
+
+  pre {
+    overflow: auto;
+    background: var(--code);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    color: #d9e8ff;
+    line-height: 1.65;
+  }
+
+  code { font-family: var(--mono); }
+
+  .quote {
+    border-left: 3px solid var(--violet);
+    padding: 10px 14px;
+    color: #d6ccff;
+    background: rgba(167, 139, 250, 0.08);
+    border-radius: 0 6px 6px 0;
+    line-height: 1.65;
+  }
+
+  .sidebox {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    align-self: start;
+    position: sticky;
+    top: 78px;
+  }
+
+  .sidebox h3 { margin-top: 0; }
+  .sidebox ol, .sidebox ul { padding-left: 18px; }
+  .sidebox li { color: var(--soft); margin: 9px 0; line-height: 1.55; }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 7px 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    background: #10151c;
+    cursor: pointer;
+  }
+
+  .quiz-option.correct { border-color: var(--mint); color: var(--mint); background: rgba(37, 213, 159, 0.09); }
+  .quiz-option.wrong { border-color: var(--rose); color: var(--rose); background: rgba(255, 107, 122, 0.08); }
+
+  .empty { color: var(--soft); padding: 24px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .hero, .layout, .modal-grid { grid-template-columns: 1fr; }
+    .sidebar { position: static; max-height: none; }
+    .lesson-grid, .cards, .resource-list { grid-template-columns: 1fr; }
+    .module-head { display: block; }
+    .week { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">// Curso interativo em português</div>
+      <h1>Python do Básico ao Pró</h1>
+      <p class="lead">
+        Uma trilha prática para aprender programação com Python e transitar por automação, web, dados,
+        backend, testes, arquitetura, segurança, deploy e portfólio. Cada aula tem conceito, exemplo,
+        erros comuns, exercício, projeto e fontes para estudar mais.
+      </p>
+    </div>
+    <aside class="stats" aria-label="Resumo de progresso">
+      <div class="stat-line"><span>Progresso geral</span><strong id="progressLabel">0%</strong></div>
+      <div class="bar"><span id="progressBar"></span></div>
+      <div class="stat-line"><span>Aulas concluídas</span><strong id="doneLabel">0/0</strong></div>
+      <div class="stat-line"><span>Próximo foco</span><strong id="nextFocus">Fundamentos</strong></div>
+    </aside>
+  </section>
+
+  <nav class="toolbar" aria-label="Navegação principal">
+    <button class="tab active" data-panel="course">Curso</button>
+    <button class="tab" data-panel="plan">Plano 24 semanas</button>
+    <button class="tab" data-panel="projects">Projetos</button>
+    <button class="tab" data-panel="resources">Fontes e livros</button>
+    <input id="search" class="search" type="search" placeholder="Buscar aula: variáveis, API, Docker, testes...">
+    <button id="resetProgress" class="ghost-btn danger">Resetar progresso</button>
+  </nav>
+
+  <section id="panel-course" class="panel-section active">
+    <div class="layout">
+      <aside class="sidebar" id="moduleList" aria-label="Módulos do curso"></aside>
+      <section class="content-panel">
+        <div id="courseView"></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="panel-plan" class="panel-section content-panel">
+    <div class="module-head">
+      <div>
+        <h2>Plano de 24 semanas</h2>
+        <p>Ritmo sugerido: 1h30 por dia, 5 dias por semana. Ajuste sem culpa: consistência vence intensidade irregular.</p>
+      </div>
+      <span class="pill">6 meses de base sólida</span>
+    </div>
+    <div class="timeline" id="planView" style="margin-top:18px"></div>
+  </section>
+
+  <section id="panel-projects" class="panel-section content-panel">
+    <div class="module-head">
+      <div>
+        <h2>Projetos de portfólio</h2>
+        <p>Projetos desenhados para provar habilidade. Cada entrega deve ter README, testes mínimos, prints ou vídeo curto e deploy quando fizer sentido.</p>
+      </div>
+      <span class="pill">aprenda fazendo</span>
+    </div>
+    <div class="cards" id="projectView" style="margin-top:18px"></div>
+  </section>
+
+  <section id="panel-resources" class="panel-section content-panel">
+    <div class="module-head">
+      <div>
+        <h2>Fontes, literatura e citações</h2>
+        <p>Uma biblioteca curta, confiável e suficiente. Primeiro documentação oficial; depois livros e referências para amadurecer como dev.</p>
+      </div>
+      <span class="pill">fontes primárias</span>
+    </div>
+    <div class="resource-list" id="resourceView" style="margin-top:18px"></div>
+  </section>
+</main>
+
+<dialog id="lessonDialog">
+  <div class="modal-head">
+    <div>
+      <div class="eyebrow" id="lessonPath">// Aula</div>
+      <h2 id="lessonTitle"></h2>
+    </div>
+    <button class="ghost-btn" onclick="closeLesson()">Fechar</button>
+  </div>
+  <div class="modal-body" id="lessonBody"></div>
+</dialog>
+
+<script>
+const STORAGE_KEY = "pythonCursoBasicoPro.v1";
+
+const RESOURCES = [
+  {
+    title: "Python Tutorial - documentação oficial",
+    kind: "Documentação",
+    url: "https://docs.python.org/3/tutorial/",
+    note: "A referência central para aprender sintaxe, tipos, módulos, classes, erros e biblioteca padrão."
+  },
+  {
+    title: "PEP 8 - Style Guide for Python Code",
+    kind: "PEP",
+    url: "https://peps.python.org/pep-0008/",
+    note: "Guia oficial de estilo. Use como referência de legibilidade, nomes, imports e formatação."
+  },
+  {
+    title: "The Zen of Python - PEP 20",
+    kind: "Citação",
+    url: "https://peps.python.org/pep-0020/",
+    note: "Ideias de design da linguagem. Citação curta para memorizar: \"Readability counts.\""
+  },
+  {
+    title: "Python Packaging User Guide",
+    kind: "Documentação",
+    url: "https://packaging.python.org/",
+    note: "Ambientes, pacotes, pyproject.toml, publicação e organização profissional de projetos Python."
+  },
+  {
+    title: "pytest documentation",
+    kind: "Documentação",
+    url: "https://docs.pytest.org/en/stable/",
+    note: "Testes automatizados com assert simples, fixtures, parametrização e cobertura."
+  },
+  {
+    title: "FastAPI documentation",
+    kind: "Documentação",
+    url: "https://fastapi.tiangolo.com/",
+    note: "APIs modernas com Python, tipagem, validação, OpenAPI e async."
+  },
+  {
+    title: "Django documentation",
+    kind: "Documentação",
+    url: "https://docs.djangoproject.com/",
+    note: "Framework completo para aplicações web, ORM, autenticação, admin e segurança."
+  },
+  {
+    title: "SQLAlchemy documentation",
+    kind: "Documentação",
+    url: "https://docs.sqlalchemy.org/",
+    note: "ORM e camada SQL para aplicações Python profissionais."
+  },
+  {
+    title: "PostgreSQL documentation",
+    kind: "Documentação",
+    url: "https://www.postgresql.org/docs/",
+    note: "Banco relacional robusto: SQL, índices, transações, constraints e performance."
+  },
+  {
+    title: "MDN Web Docs",
+    kind: "Documentação",
+    url: "https://developer.mozilla.org/",
+    note: "HTML, CSS, JavaScript, HTTP e fundamentos web. Excelente para conectar backend Python ao navegador."
+  },
+  {
+    title: "Pro Git Book",
+    kind: "Livro gratuito",
+    url: "https://git-scm.com/book/en/v2",
+    note: "Livro oficial e gratuito para Git: commits, branches, merge, rebase e colaboração."
+  },
+  {
+    title: "Docker Get Started",
+    kind: "Documentação",
+    url: "https://docs.docker.com/get-started/",
+    note: "Containers, imagens, Dockerfile, volumes, redes e Compose."
+  },
+  {
+    title: "OWASP Top Ten",
+    kind: "Segurança",
+    url: "https://owasp.org/www-project-top-ten/",
+    note: "Riscos essenciais de segurança para aplicações web."
+  },
+  {
+    title: "Automate the Boring Stuff with Python",
+    kind: "Livro",
+    url: "https://automatetheboringstuff.com/",
+    note: "Ótimo para iniciantes: automação, arquivos, planilhas, web scraping e tarefas reais."
+  },
+  {
+    title: "Fluent Python",
+    kind: "Livro",
+    url: "https://www.fluentpython.com/",
+    note: "Livro avançado para dominar idiomatismos, protocolos, funções, classes e concorrência."
+  },
+  {
+    title: "Refactoring Guru",
+    kind: "Referência",
+    url: "https://refactoring.guru/",
+    note: "Refatoração e design patterns explicados com exemplos visuais."
+  }
+];
+
+const MODULES = [
+  {
+    id: "fundamentos",
+    title: "1. Fundamentos de Programação",
+    duration: "4 semanas",
+    goal: "Sair do zero com lógica, Python básico, terminal, leitura de erro e pequenos programas.",
+    lessons: [
+      lesson("variaveis", "Variáveis e memória", "Entenda como nomes apontam para valores e por que isso é a base de todo programa.", "iniciante", "core",
+        "Variável é um nome que você usa para acessar um valor. Em Python, você não declara o tipo antes: o valor carrega o tipo. O essencial é aprender a nomear bem e entender que reatribuir um nome não apaga a ideia de valor, apenas muda para qual objeto aquele nome aponta.",
+        "Caixa com etiqueta: a etiqueta é o nome, o conteúdo é o valor. Trocar o conteúdo muda o que você pega quando procura pela etiqueta.",
+        "nome = \"Ana\"\nidade = 27\nsaldo = 153.75\nativo = True\n\nprint(nome, idade, saldo, ativo)\nidade = idade + 1\nprint(f\"{nome} terá {idade} anos\")",
+        ["Usar nomes sem significado como x1 e temp2 em código real.", "Confundir texto \"10\" com número 10.", "Criar variável antes de entender onde ela será usada."],
+        ["Crie variáveis para nome, idade, cidade e objetivo de carreira.", "Monte uma frase usando f-string.", "Troque a idade e imprima a frase novamente."],
+        "Por que idade = idade + 1 funciona?", ["Porque Python altera o passado", "Porque lê o valor atual, soma 1 e reatribui ao mesmo nome", "Porque idade é sempre texto"], 1,
+        ["Python Tutorial: Using Python as a Calculator", "PEP 8"]),
+      lesson("tipos", "Tipos de dados", "Números, strings, booleanos, None, conversão e comparação.", "iniciante", "core",
+        "Tipos definem quais operações fazem sentido. Você soma números, concatena strings, testa booleanos e usa None para ausência de valor. Bons devs aprendem a perguntar: que tipo eu espero receber e que tipo vou devolver?",
+        "Tipos são como tomadas: cada aparelho precisa do encaixe certo. Se você força, dá erro.",
+        "preco = 19.90\nquantidade = 3\ntotal = preco * quantidade\n\nidade_texto = \"32\"\nidade = int(idade_texto)\nmaior_de_idade = idade >= 18\n\nprint(type(total), total)\nprint(maior_de_idade)",
+        ["Comparar tipos incompatíveis sem converter.", "Usar float para dinheiro em sistemas sérios.", "Tratar None como string vazia."],
+        ["Leia uma idade como texto e converta para int.", "Calcule IMC usando float.", "Crie uma variável booleana para aprovado/reprovado."],
+        "Qual função converte texto para número inteiro?", ["str()", "int()", "bool()"], 1,
+        ["Python Tutorial: Built-in Types"]),
+      lesson("condicionais", "Condicionais e decisões", "if, elif, else, operadores lógicos e regras de negócio.", "iniciante", "core",
+        "Condicionais permitem que o programa escolha caminhos. O segredo é transformar regra humana em condição precisa: se a média é maior ou igual a 7, aprovado; se está entre 5 e 6.9, recuperação; senão, reprovado.",
+        "É como uma portaria: cada regra decide para qual fila a pessoa vai.",
+        "media = 6.4\nfrequencia = 82\n\nif media >= 7 and frequencia >= 75:\n    status = \"aprovado\"\nelif media >= 5 and frequencia >= 75:\n    status = \"recuperação\"\nelse:\n    status = \"reprovado\"\n\nprint(status)",
+        ["Esquecer indentação.", "Criar condições impossíveis.", "Usar muitos ifs quando um dicionário ou função resolveria melhor."],
+        ["Crie uma regra de desconto por faixa de valor.", "Crie um sistema de login simples.", "Teste todos os caminhos possíveis."],
+        "Qual operador exige que duas condições sejam verdadeiras?", ["or", "and", "not"], 1,
+        ["Python Tutorial: More Control Flow Tools"]),
+      lesson("loops", "Loops: for e while", "Repetição controlada, range, break, continue e padrões de iteração.", "iniciante", "core",
+        "Loops executam uma ação várias vezes. Use for quando você sabe a coleção ou intervalo; use while quando a repetição depende de uma condição que muda durante a execução.",
+        "for é uma lista de tarefas; while é uma campainha que toca até alguém atender.",
+        "nomes = [\"Ana\", \"Bruno\", \"Carla\"]\nfor nome in nomes:\n    print(f\"Olá, {nome}\")\n\nsenha = \"\"\ntentativas = 0\nwhile senha != \"python\" and tentativas < 3:\n    senha = input(\"Senha: \")\n    tentativas += 1",
+        ["Criar loop infinito sem atualizar a condição.", "Modificar lista enquanto percorre sem cuidado.", "Usar while onde for seria mais claro."],
+        ["Some os números de 1 a 100.", "Conte quantas palavras têm mais de 5 letras.", "Crie um menu que repete até o usuário sair."],
+        "Quando while para?", ["Quando a condição fica falsa", "Sempre depois de 10 voltas", "Quando existe uma lista"], 0,
+        ["Python Tutorial: for Statements"]),
+      lesson("funcoes", "Funções", "Parâmetros, retorno, escopo, responsabilidade única e testes simples.", "iniciante", "core",
+        "Funções encapsulam uma ideia. Uma boa função recebe dados, faz uma coisa clara e devolve resultado. Isso reduz repetição e permite testar partes do programa isoladamente.",
+        "Função é uma receita: entra ingrediente, sai resultado.",
+        "def calcular_media(notas):\n    if not notas:\n        return 0\n    return sum(notas) / len(notas)\n\nmedia = calcular_media([8, 7.5, 9])\nprint(round(media, 2))",
+        ["Fazer função que imprime quando deveria retornar.", "Colocar responsabilidades demais na mesma função.", "Depender de variáveis globais sem necessidade."],
+        ["Crie função para converter Celsius em Fahrenheit.", "Crie função que valida CPF fictício por tamanho.", "Escreva 3 testes manuais com print."],
+        "O que return faz?", ["Mostra texto na tela", "Devolve um valor para quem chamou a função", "Cria uma variável global"], 1,
+        ["Python Tutorial: Defining Functions"]),
+      lesson("colecoes", "Listas, tuplas, sets e dicionários", "Coleções para organizar dados e resolver problemas reais.", "iniciante", "core",
+        "Coleções são estruturas para guardar muitos valores. Lista preserva ordem e permite repetição. Tupla é útil para grupos imutáveis. Set remove duplicados. Dicionário associa chave a valor e é uma das estruturas mais importantes em Python.",
+        "Lista é fila, tupla é coordenada fixa, set é lista sem repetidos, dicionário é agenda de contatos.",
+        "aluno = {\n    \"nome\": \"Marina\",\n    \"notas\": [8, 9, 7.5],\n    \"ativo\": True\n}\n\nmedia = sum(aluno[\"notas\"]) / len(aluno[\"notas\"])\naluno[\"media\"] = media\nprint(aluno)",
+        ["Usar lista de listas quando dicionário deixaria claro.", "Acessar chave que talvez não exista sem get.", "Confundir mutabilidade de lista com tupla."],
+        ["Monte uma lista de compras.", "Transforme em dicionário com preço.", "Calcule o total da compra."],
+        "Qual estrutura usa chave e valor?", ["list", "dict", "set"], 1,
+        ["Python Tutorial: Data Structures"]),
+      lesson("arquivos", "Arquivos, JSON e tratamento de erros", "Ler, salvar e proteger programas contra falhas comuns.", "iniciante", "project",
+        "Programas úteis quase sempre leem ou salvam dados. Você precisa saber abrir arquivos com with, converter JSON e tratar exceções com try/except sem esconder erros importantes.",
+        "Arquivo é memória de longo prazo; exceção é um aviso de que a realidade discordou do plano.",
+        "import json\nfrom pathlib import Path\n\npath = Path(\"tarefas.json\")\ntry:\n    tarefas = json.loads(path.read_text(encoding=\"utf-8\"))\nexcept FileNotFoundError:\n    tarefas = []\n\ntarefas.append({\"titulo\": \"estudar funções\", \"feito\": False})\npath.write_text(json.dumps(tarefas, indent=2, ensure_ascii=False), encoding=\"utf-8\")",
+        ["Usar except vazio.", "Salvar texto sem pensar em encoding.", "Misturar regra de negócio e leitura de arquivo na mesma função."],
+        ["Crie um gerenciador de tarefas em JSON.", "Adicione listar, criar e marcar como feito.", "Trate arquivo ausente."],
+        "Por que usar with ao abrir arquivo?", ["Para gerenciar fechamento do arquivo com segurança", "Para deixar o código mais colorido", "Para converter para JSON"], 0,
+        ["Python Tutorial: Errors and Exceptions", "Python pathlib docs"])
+    ]
+  },
+  {
+    id: "ferramentas",
+    title: "2. Ferramentas e Ambiente Profissional",
+    duration: "3 semanas",
+    goal: "Trabalhar como dev: terminal, Git, GitHub, ambiente virtual, pacotes, debug e organização.",
+    lessons: [
+      lesson("terminal", "Terminal sem medo", "Comandos essenciais, caminhos, scripts e automação local.", "iniciante", "core",
+        "Terminal é a interface direta com ferramentas de desenvolvimento. Você não precisa decorar tudo: precisa entender diretório atual, listar arquivos, navegar, rodar comandos e ler saídas.",
+        "É o painel de controle da máquina do dev.",
+        "pwd\nls\ncd projetos\npython --version\npython app.py\npip install requests",
+        ["Rodar comando no diretório errado.", "Copiar comando sem entender efeito.", "Ignorar mensagens de erro."],
+        ["Crie uma pasta de projeto pelo terminal.", "Rode um arquivo Python.", "Instale uma biblioteca em ambiente virtual."],
+        "O que cd faz?", ["Lista arquivos", "Muda de diretório", "Instala pacote"], 1,
+        ["Python venv docs"]),
+      lesson("venv", "Ambientes virtuais e dependências", "venv, pip, requirements.txt e pyproject.toml.", "iniciante", "core",
+        "Ambiente virtual isola dependências de um projeto. Sem isso, bibliotecas de projetos diferentes brigam entre si. Em projetos modernos, você também verá pyproject.toml para configurar pacote e ferramentas.",
+        "É uma mochila própria para cada projeto.",
+        "python -m venv .venv\n# Windows: .venv\\Scripts\\activate\n# macOS/Linux: source .venv/bin/activate\npip install requests pytest\npip freeze > requirements.txt",
+        ["Instalar pacotes globalmente sem perceber.", "Versionar a pasta .venv.", "Não registrar dependências."],
+        ["Crie venv.", "Instale requests.", "Crie requirements.txt.", "Explique por que .venv fica no .gitignore."],
+        "Qual arquivo costuma listar dependências instaladas com pip freeze?", ["README.md", "requirements.txt", "index.html"], 1,
+        ["Python Packaging User Guide"]),
+      lesson("git", "Git e GitHub", "Commits, branches, pull requests e histórico limpo.", "iniciante", "core",
+        "Git registra a história do projeto. O objetivo não é só salvar código: é criar pontos de recuperação, colaborar, revisar mudanças e explicar evolução técnica.",
+        "É uma máquina do tempo com diário de bordo.",
+        "git init\ngit status\ngit add .\ngit commit -m \"Add task manager\"\ngit switch -c feature/api\ngit log --oneline",
+        ["Commit gigante sem mensagem útil.", "Subir senha ou .env.", "Confundir Git com GitHub."],
+        ["Crie repo local.", "Faça 3 commits pequenos.", "Crie branch para uma melhoria.", "Abra um Pull Request."],
+        "O que commit representa?", ["Um pacote de mudanças registradas", "Um servidor", "Uma linguagem"], 0,
+        ["Pro Git Book"]),
+      lesson("debug", "Debug e leitura de erros", "Traceback, breakpoints, prints úteis e raciocínio investigativo.", "iniciante", "deep",
+        "Debug é investigação. Leia o traceback de baixo para cima, identifique arquivo, linha, exceção e hipótese. Bons devs não chutam: reduzem o problema até ele ficar óbvio.",
+        "É medicina do código: sintoma, exame, diagnóstico, tratamento.",
+        "def dividir(a, b):\n    return a / b\n\ntry:\n    print(dividir(10, 0))\nexcept ZeroDivisionError as erro:\n    print(f\"Erro esperado: {erro}\")",
+        ["Ignorar o tipo da exceção.", "Colocar print em tudo sem hipótese.", "Corrigir efeito e não causa."],
+        ["Pegue um erro real.", "Anote exceção, linha e causa provável.", "Corrija e escreva como evitaria."],
+        "Onde geralmente está a linha mais útil do traceback?", ["Perto do final", "No título da janela", "Sempre na primeira linha"], 0,
+        ["Python Tutorial: Errors and Exceptions"]),
+      lesson("qualidade", "Formatação, lint e estilo", "PEP 8, Black, Ruff, nomes e consistência.", "intermediário", "core",
+        "Código profissional é legível e consistente. Ferramentas como Black e Ruff ajudam, mas estilo começa na intenção: nomes bons, funções pequenas e estrutura previsível.",
+        "É revisão ortográfica e gramática para código.",
+        "def calcular_total(preco_unitario: float, quantidade: int) -> float:\n    return preco_unitario * quantidade\n\n# Exemplo de ferramentas:\n# black .\n# ruff check .",
+        ["Achar que código limpo é código curto.", "Usar abreviações obscuras.", "Misturar português e inglês sem padrão."],
+        ["Refatore uma função com nomes ruins.", "Formate com Black.", "Crie padrão de nomes para o projeto."],
+        "PEP 8 é principalmente sobre...", ["Estilo e legibilidade", "Banco de dados", "Deploy"], 0,
+        ["PEP 8", "Ruff docs"])
+    ]
+  },
+  {
+    id: "poo",
+    title: "3. Python Intermediário e POO",
+    duration: "4 semanas",
+    goal: "Escrever código modular, tipado, testável e orientado a objetos quando fizer sentido.",
+    lessons: [
+      lesson("modulos", "Módulos, pacotes e arquitetura simples", "Separar responsabilidades e importar código corretamente.", "intermediário", "core",
+        "Um projeto cresce melhor quando cada arquivo tem responsabilidade clara. Módulos agrupam funções e classes; pacotes agrupam módulos. Arquitetura simples começa separando entrada, regra de negócio e persistência.",
+        "É organizar uma oficina: ferramenta certa na gaveta certa.",
+        "meu_app/\n  app.py\n  services.py\n  repositories.py\n  models.py\n\nfrom services import calcular_total",
+        ["Criar arquivo utils.py que vira depósito de tudo.", "Import circular.", "Misturar CLI, banco e regra no mesmo arquivo."],
+        ["Divida um app de tarefas em 3 módulos.", "Crie imports claros.", "Explique a responsabilidade de cada arquivo."],
+        "O que pacote Python normalmente contém?", ["Arquivo __init__.py e módulos", "Só imagens", "Apenas HTML"], 0,
+        ["Python Tutorial: Modules"]),
+      lesson("poo", "Classes, objetos e dataclasses", "Modelar entidades sem exagerar na abstração.", "intermediário", "core",
+        "POO é útil quando você tem estado e comportamento relacionados. Em Python, dataclasses reduzem boilerplate para objetos de dados. Nem tudo precisa virar classe: escolha pelo problema.",
+        "Classe é molde; objeto é peça criada a partir dele.",
+        "from dataclasses import dataclass\n\n@dataclass\nclass Produto:\n    nome: str\n    preco: float\n\n    def aplicar_desconto(self, percentual: float) -> float:\n        return self.preco * (1 - percentual)\n\nproduto = Produto(\"Curso\", 100.0)\nprint(produto.aplicar_desconto(0.1))",
+        ["Criar classe sem comportamento nenhum quando dict bastaria.", "Herdar antes de compor.", "Guardar estado mutável sem necessidade."],
+        ["Modele Produto, Pedido e Cliente.", "Calcule total do pedido.", "Use dataclass e type hints."],
+        "Quando classe costuma fazer sentido?", ["Quando dados e comportamento andam juntos", "Sempre", "Nunca em Python"], 0,
+        ["Python dataclasses docs"]),
+      lesson("typing", "Type hints e contratos", "Anotações, Optional, Protocol, mypy/pyright e documentação viva.", "intermediário", "deep",
+        "Type hints não transformam Python em linguagem estática, mas documentam intenção e ajudam ferramentas a detectar erros. O benefício aumenta em projetos grandes.",
+        "É uma etiqueta técnica: diz o que entra e o que sai.",
+        "from typing import Optional\n\ndef buscar_usuario(id: int) -> Optional[dict]:\n    if id == 1:\n        return {\"id\": 1, \"nome\": \"Ana\"}\n    return None",
+        ["Anotar tipo errado só para calar ferramenta.", "Ignorar None.", "Usar Any como fuga permanente."],
+        ["Adicione type hints a 5 funções antigas.", "Crie função que pode retornar None.", "Trate o retorno antes de acessar."],
+        "Optional[str] significa...", ["str ou None", "str obrigatório", "lista de strings"], 0,
+        ["Python typing docs"]),
+      lesson("decorators", "Decorators, iteradores e generators", "Recursos avançados que aparecem em frameworks e libs.", "avançado", "deep",
+        "Decorators modificam ou envolvem funções. Iteradores e generators permitem processar sequências sob demanda, economizando memória e criando pipelines elegantes.",
+        "Decorator é embalagem; generator é torneira que entrega um item por vez.",
+        "def logar(func):\n    def wrapper(*args, **kwargs):\n        print(f\"Chamando {func.__name__}\")\n        return func(*args, **kwargs)\n    return wrapper\n\n@logar\ndef somar(a, b):\n    return a + b\n\ndef contar_ate(n):\n    for i in range(1, n + 1):\n        yield i",
+        ["Usar decorator sem preservar metadata.", "Materializar lista enorme sem necessidade.", "Esconder lógica importante atrás de mágica."],
+        ["Crie decorator de tempo de execução.", "Crie generator que lê arquivo linha a linha.", "Explique diferença entre return e yield."],
+        "yield cria...", ["Um generator", "Uma classe", "Um banco"], 0,
+        ["Python Tutorial: Generators"])
+    ]
+  },
+  {
+    id: "web",
+    title: "4. Web, APIs e Banco de Dados",
+    duration: "5 semanas",
+    goal: "Construir aplicações backend reais com HTTP, FastAPI/Django, SQL e PostgreSQL.",
+    lessons: [
+      lesson("http", "HTTP, REST e JSON", "Métodos, status codes, headers, payloads e desenho de APIs.", "intermediário", "core",
+        "A web conversa por HTTP. APIs bem desenhadas usam recursos, métodos e status codes com intenção: GET lê, POST cria, PUT/PATCH altera, DELETE remove. JSON é o formato mais comum de troca de dados.",
+        "HTTP é o protocolo de pedidos e respostas da internet.",
+        "GET /usuarios/42 -> 200 OK\nPOST /usuarios -> 201 Created\nPATCH /usuarios/42 -> 200 OK\nDELETE /usuarios/42 -> 204 No Content",
+        ["Usar POST para tudo.", "Retornar 200 para erro.", "Criar endpoints com nomes de ação em vez de recurso sem motivo."],
+        ["Desenhe endpoints para tarefas.", "Escolha status codes.", "Escreva exemplos de request/response."],
+        "Qual método normalmente cria recurso?", ["GET", "POST", "DELETE"], 1,
+        ["MDN HTTP", "FastAPI docs"]),
+      lesson("fastapi", "FastAPI do zero", "Rotas, Pydantic, validação, docs automáticas e dependências.", "intermediário", "project",
+        "FastAPI permite criar APIs rápidas com type hints e validação. Ele gera documentação OpenAPI automaticamente, o que ajuda estudo, teste e comunicação com frontend.",
+        "É como construir API com manual automático embutido.",
+        "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nclass Tarefa(BaseModel):\n    titulo: str\n    feita: bool = False\n\n@app.post(\"/tarefas\")\ndef criar_tarefa(tarefa: Tarefa):\n    return {\"id\": 1, **tarefa.model_dump()}",
+        ["Não validar entrada.", "Colocar regra de negócio diretamente em todas as rotas.", "Ignorar autenticação em rotas sensíveis."],
+        ["Crie CRUD de tarefas.", "Adicione Pydantic.", "Teste no /docs.", "Separe service e repository."],
+        "FastAPI usa type hints para ajudar em...", ["Validação e documentação", "Apenas CSS", "Criação de imagens"], 0,
+        ["FastAPI documentation"]),
+      lesson("sql", "SQL e PostgreSQL", "SELECT, JOIN, índices, constraints e transações.", "intermediário", "core",
+        "SQL é uma habilidade central. Aprenda a modelar dados, impor regras no banco e consultar com clareza. PostgreSQL é uma excelente escolha profissional para APIs e produtos reais.",
+        "Banco relacional é uma biblioteca com regras de organização e integridade.",
+        "CREATE TABLE usuarios (\n  id SERIAL PRIMARY KEY,\n  email TEXT UNIQUE NOT NULL,\n  criado_em TIMESTAMP DEFAULT NOW()\n);\n\nSELECT email FROM usuarios WHERE email ILIKE '%@gmail.com';",
+        ["Guardar tudo como texto.", "Não usar constraints.", "Criar índice sem medir necessidade."],
+        ["Modele usuários e tarefas.", "Crie FK.", "Escreva consultas com JOIN.", "Explique uma transação."],
+        "UNIQUE serve para...", ["Impedir valores duplicados", "Apagar tabela", "Criar JSON"], 0,
+        ["PostgreSQL documentation"]),
+      lesson("orm", "ORM com SQLAlchemy", "Modelos, sessões, migrations e limites do ORM.", "intermediário", "deep",
+        "ORM mapeia tabelas para objetos, mas não substitui entender SQL. Use para produtividade, mantendo consciência de queries, transações e performance.",
+        "ORM é tradutor entre mundo objeto e mundo tabela.",
+        "from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column\n\nclass Base(DeclarativeBase):\n    pass\n\nclass Usuario(Base):\n    __tablename__ = \"usuarios\"\n    id: Mapped[int] = mapped_column(primary_key=True)\n    email: Mapped[str] = mapped_column(unique=True)",
+        ["Usar ORM como caixa preta.", "Criar N+1 queries.", "Não versionar migrations."],
+        ["Crie modelo Usuario.", "Persista no banco.", "Liste registros.", "Explique quando escrever SQL manual."],
+        "ORM elimina a necessidade de saber SQL?", ["Não", "Sim", "Só em frontend"], 0,
+        ["SQLAlchemy documentation"]),
+      lesson("django", "Django para produtos completos", "Quando escolher Django, admin, auth, ORM e arquitetura.", "intermediário", "project",
+        "Django é forte quando você quer produto web completo: autenticação, admin, ORM, templates, segurança e estrutura madura. É diferente de FastAPI: mais baterias incluídas.",
+        "É uma oficina pronta, com ferramentas penduradas na parede.",
+        "from django.db import models\n\nclass Produto(models.Model):\n    nome = models.CharField(max_length=120)\n    preco = models.DecimalField(max_digits=10, decimal_places=2)\n\n    def __str__(self):\n        return self.nome",
+        ["Escolher framework por moda.", "Ignorar settings de segurança.", "Colocar regra complexa em views enormes."],
+        ["Crie app de catálogo.", "Use admin.", "Crie model e migration.", "Adicione login."],
+        "Django é conhecido por...", ["Baterias incluídas", "Ser apenas banco", "Ser editor de texto"], 0,
+        ["Django documentation"])
+    ]
+  },
+  {
+    id: "dados",
+    title: "5. Dados, Automação e IA Aplicada",
+    duration: "4 semanas",
+    goal: "Usar Python para automação, análise de dados, scraping responsável e integração com IA.",
+    lessons: [
+      lesson("automacao", "Automação de tarefas", "Arquivos, planilhas, e-mails, PDFs e scripts úteis.", "intermediário", "project",
+        "Automação é uma das formas mais rápidas de sentir poder com Python. Foque em tarefas repetitivas, entrada e saída clara, logs e segurança ao manipular arquivos.",
+        "É ensinar o computador a fazer o trabalho chato sem reclamar.",
+        "from pathlib import Path\n\nfor arquivo in Path(\"downloads\").glob(\"*.txt\"):\n    novo_nome = arquivo.name.lower().replace(\" \", \"-\")\n    arquivo.rename(arquivo.with_name(novo_nome))",
+        ["Automatizar sem backup.", "Apagar/mover arquivos em massa sem simulação.", "Não registrar logs."],
+        ["Crie script que organiza arquivos.", "Adicione modo simulação.", "Gere relatório final."],
+        "Antes de mover muitos arquivos, é prudente...", ["Testar com simulação/backup", "Rodar sem olhar", "Apagar logs"], 0,
+        ["Automate the Boring Stuff"]),
+      lesson("pandas", "Pandas e análise tabular", "DataFrames, limpeza, agrupamentos e relatórios.", "intermediário", "core",
+        "Pandas é ótimo para dados tabulares. Aprenda a carregar, inspecionar, limpar, agrupar e exportar. O objetivo não é decorar métodos: é pensar em pipeline de dados.",
+        "É uma planilha programável.",
+        "import pandas as pd\n\ndf = pd.read_csv(\"vendas.csv\")\nresumo = (\n    df.groupby(\"produto\")[\"valor\"]\n      .sum()\n      .sort_values(ascending=False)\n)\nprint(resumo.head(10))",
+        ["Não olhar tipos e nulos.", "Alterar dados sem rastrear passos.", "Confundir correlação com causa."],
+        ["Analise vendas fictícias.", "Encontre top produtos.", "Gere CSV final.", "Escreva 5 insights."],
+        "groupby é usado para...", ["Agrupar e resumir dados", "Criar API", "Instalar pacote"], 0,
+        ["pandas documentation"]),
+      lesson("scraping", "Web scraping responsável", "Requests, BeautifulSoup, APIs, robots.txt e ética.", "intermediário", "deep",
+        "Scraping deve respeitar termos, limites e privacidade. Prefira APIs oficiais quando existirem. Quando raspar HTML, seja educado: rate limit, user-agent claro e cache.",
+        "É coletar dados em público sem derrubar a porta.",
+        "import requests\nfrom bs4 import BeautifulSoup\n\nresp = requests.get(\"https://example.com\", timeout=10)\nresp.raise_for_status()\nsoup = BeautifulSoup(resp.text, \"html.parser\")\nprint(soup.title.text)",
+        ["Ignorar termos do site.", "Fazer requisições rápidas demais.", "Raspar dados sensíveis."],
+        ["Consuma uma API pública.", "Depois extraia título de uma página simples.", "Adicione timeout e tratamento de erro."],
+        "Quando existe API oficial, normalmente você deve...", ["Preferir a API", "Ignorar e raspar HTML", "Usar senha de terceiros"], 0,
+        ["Requests docs", "BeautifulSoup docs"]),
+      lesson("ia", "IA como copiloto de estudo", "Prompts, revisão de código, explicações, limites e verificação.", "intermediário", "core",
+        "IA ajuda muito quando você pede tarefas específicas: explicar erro, gerar exercícios, revisar código, criar testes e comparar abordagens. Mas você precisa validar, rodar e entender o resultado.",
+        "É um par de programação incansável, mas não infalível.",
+        "Prompt útil:\n\"Explique este traceback linha por linha. Depois proponha uma correção mínima e um teste pytest para evitar regressão. Código: ...\"",
+        ["Pedir projeto inteiro sem entender.", "Confiar sem rodar.", "Não mencionar contexto, erro e objetivo."],
+        ["Use IA para gerar 5 exercícios de listas.", "Peça revisão de uma função sua.", "Confira cada sugestão rodando testes."],
+        "O melhor uso de IA para iniciante é...", ["Acelerar entendimento com verificação", "Substituir estudo", "Nunca testar nada"], 0,
+        ["OpenAI docs", "Python docs"])
+    ]
+  },
+  {
+    id: "engenharia",
+    title: "6. Testes, Engenharia e Arquitetura",
+    duration: "4 semanas",
+    goal: "Construir software confiável: testes, design, refatoração, padrões, logging e manutenção.",
+    lessons: [
+      lesson("pytest", "Testes com pytest", "Unitários, fixtures, parametrização e cobertura significativa.", "intermediário", "core",
+        "Testes automatizados dão coragem para mudar código. Comece testando funções puras e regras de negócio. Depois suba para integração com banco e API.",
+        "É rede de segurança para refatorar sem medo.",
+        "def dividir(a, b):\n    if b == 0:\n        raise ValueError(\"divisão por zero\")\n    return a / b\n\ndef test_dividir():\n    assert dividir(10, 2) == 5\n\nimport pytest\n\ndef test_dividir_por_zero():\n    with pytest.raises(ValueError):\n        dividir(10, 0)",
+        ["Testar só caminho feliz.", "Criar testes frágeis que dependem de ordem.", "Medir cobertura sem qualidade."],
+        ["Teste uma calculadora.", "Parametrize casos.", "Teste exceção.", "Rode cobertura."],
+        "pytest.raises serve para...", ["Testar exceção esperada", "Criar banco", "Formatar código"], 0,
+        ["pytest documentation"]),
+      lesson("arquitetura", "Arquitetura limpa na prática", "Separar domínio, aplicação, infraestrutura e interface.", "avançado", "deep",
+        "Arquitetura é gestão de dependências. Regras de negócio devem depender menos de detalhes como banco, web ou CLI. Isso facilita teste e troca de tecnologia.",
+        "É colocar a parte importante da casa longe da chuva.",
+        "app/\n  domain/      # entidades e regras\n  services/    # casos de uso\n  infra/       # banco, arquivos, APIs externas\n  api/         # rotas HTTP\n  tests/",
+        ["Criar arquitetura enorme para app pequeno.", "Deixar regra de negócio dentro da rota.", "Acoplar domínio ao ORM sem pensar."],
+        ["Pegue CRUD FastAPI.", "Separe service.", "Teste service sem HTTP.", "Explique dependências."],
+        "Boa arquitetura busca controlar...", ["Dependências", "Cores do terminal", "Quantidade de emojis"], 0,
+        ["Refactoring Guru", "Django docs", "FastAPI docs"]),
+      lesson("patterns", "Design patterns sem fanatismo", "Factory, Strategy, Adapter, Repository e Observer.", "avançado", "deep",
+        "Patterns são nomes para soluções recorrentes. Use quando reduzem complexidade, não para parecer avançado. Em Python, muitas vezes função simples substitui classe complicada.",
+        "É um catálogo de soluções, não uma lei.",
+        "class FreteStrategy:\n    def calcular(self, peso):\n        raise NotImplementedError\n\nclass FreteExpresso(FreteStrategy):\n    def calcular(self, peso):\n        return 20 + peso * 2\n\nclass FreteEconomico(FreteStrategy):\n    def calcular(self, peso):\n        return 10 + peso",
+        ["Forçar pattern em problema simples.", "Confundir padrão com arquitetura.", "Criar abstração antes da dor aparecer."],
+        ["Implemente Strategy para frete.", "Troque algoritmo sem mudar cliente.", "Compare com função simples."],
+        "Patterns devem ser usados quando...", ["Resolvem uma dor real", "Todo dia", "Para aumentar linhas"], 0,
+        ["Refactoring Guru"]),
+      lesson("logging", "Logging, observabilidade e manutenção", "Logs úteis, métricas simples, erros e suporte em produção.", "avançado", "core",
+        "Em produção, print não basta. Logs devem contar o que aconteceu, com contexto, sem vazar dados sensíveis. Observabilidade ajuda a entender falhas reais.",
+        "É a caixa-preta do avião do software.",
+        "import logging\n\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\nlogger.info(\"pedido_criado\", extra={\"pedido_id\": 42})\ntry:\n    1 / 0\nexcept ZeroDivisionError:\n    logger.exception(\"falha_ao_calcular\")",
+        ["Logar senha/token.", "Logar demais sem contexto.", "Não diferenciar info, warning e error."],
+        ["Substitua prints por logging.", "Adicione contexto.", "Crie tratamento de erro com logger.exception."],
+        "logger.exception deve ser usado geralmente...", ["Dentro de except", "Só em CSS", "Antes de importar logging"], 0,
+        ["Python logging docs"])
+    ]
+  },
+  {
+    id: "deploy",
+    title: "7. Deploy, Segurança e Operação",
+    duration: "3 semanas",
+    goal: "Colocar aplicações no ar com segurança mínima, containers, CI/CD e monitoramento básico.",
+    lessons: [
+      lesson("docker", "Docker e Docker Compose", "Containers, imagens, Dockerfile, volumes e serviços.", "intermediário", "project",
+        "Docker empacota aplicação e ambiente. Ajuda a rodar local, testar e publicar com menos diferenças entre máquinas. Compose orquestra serviços como app, banco e cache.",
+        "É uma caixa padronizada para transportar sua aplicação.",
+        "FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]",
+        ["Rodar container como root sem avaliar.", "Copiar arquivos desnecessários.", "Não usar .dockerignore."],
+        ["Dockerize uma API.", "Adicione PostgreSQL no Compose.", "Crie .dockerignore.", "Explique imagem vs container."],
+        "Dockerfile define...", ["Como construir a imagem", "Como escrever CSS", "Como criar variável Python"], 0,
+        ["Docker Get Started"]),
+      lesson("cicd", "CI/CD com GitHub Actions", "Pipeline de testes, lint, build e deploy.", "avançado", "core",
+        "CI roda verificações automaticamente a cada push ou pull request. CD publica quando critérios passam. Mesmo projeto pequeno ganha profissionalismo com pipeline simples.",
+        "É uma esteira de qualidade antes da entrega.",
+        "name: CI\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n      - run: pip install -r requirements.txt\n      - run: pytest",
+        ["Deploy sem testes.", "Guardar segredo no YAML.", "Pipeline lento demais sem necessidade."],
+        ["Crie workflow CI.", "Rode pytest.", "Adicione lint.", "Bloqueie merge se falhar."],
+        "CI deve rodar normalmente...", ["A cada push/PR", "Só no fim do ano", "Nunca"], 0,
+        ["GitHub Actions docs"]),
+      lesson("seguranca", "Segurança essencial para dev Python", "OWASP, secrets, autenticação, autorização e validação.", "avançado", "deep",
+        "Segurança começa no básico bem feito: validar entrada, proteger secrets, autenticar, autorizar, usar HTTPS, atualizar dependências e não confiar em dados do usuário.",
+        "É projetar portas, chaves e alarmes antes do incidente.",
+        "import os\n\nSECRET_KEY = os.environ.get(\"SECRET_KEY\")\nif not SECRET_KEY:\n    raise RuntimeError(\"SECRET_KEY ausente\")\n\n# Nunca coloque senhas direto no código.",
+        ["Comitar .env.", "Confundir autenticação com autorização.", "Montar SQL concatenando input."],
+        ["Revise um projeto usando OWASP Top Ten.", "Remova secrets do código.", "Use variáveis de ambiente.", "Adicione validação."],
+        "Autorização responde...", ["O que este usuário pode fazer?", "Quem é este usuário?", "Qual é a cor do botão?"], 0,
+        ["OWASP Top Ten", "Django security docs", "FastAPI security docs"]),
+      lesson("cloud", "Deploy e cloud básica", "Render, Railway, VPS, AWS, logs, env vars e rollback.", "avançado", "project",
+        "Deploy é tornar o software acessível. O iniciante deve começar simples, com Render/Railway/Fly.io ou VPS pequena, e entender variáveis de ambiente, banco, logs e rollback.",
+        "É sair do computador local e abrir a porta para usuários reais.",
+        "Checklist de deploy:\n1. requirements travado\n2. variáveis de ambiente\n3. banco configurado\n4. migrations\n5. logs\n6. health check\n7. plano de rollback",
+        ["Subir sem logs.", "Usar banco local por engano.", "Não saber voltar versão."],
+        ["Faça deploy de uma API.", "Configure env vars.", "Teste health check.", "Documente rollback."],
+        "Rollback é...", ["Voltar para versão anterior segura", "Apagar projeto", "Criar loop"], 0,
+        ["Docker Get Started", "FastAPI deployment docs", "Django deployment docs"])
+    ]
+  },
+  {
+    id: "carreira",
+    title: "8. Portfólio, Entrevistas e Nível Pró",
+    duration: "4 semanas",
+    goal: "Consolidar projetos, README, GitHub, desafios técnicos e maturidade de engenharia.",
+    lessons: [
+      lesson("portfolio", "Portfólio que convence", "Projetos, README, demonstração, decisões técnicas e métricas.", "intermediário", "project",
+        "Portfólio bom não é quantidade de repositórios. É clareza de problema, solução, stack, como rodar, decisões tomadas e evidência de funcionamento.",
+        "É sua vitrine técnica com bastidores organizados.",
+        "README ideal:\n- Problema\n- Solução\n- Stack\n- Como rodar\n- Prints ou vídeo\n- Testes\n- Decisões técnicas\n- Próximos passos",
+        ["README vazio.", "Projeto que não roda.", "Sem prints, testes ou explicação."],
+        ["Escolha 3 projetos.", "Melhore README.", "Adicione badges úteis.", "Grave demo curta."],
+        "Portfólio forte mostra...", ["Problema, solução e evidências", "Só nome bonito", "Apenas emojis"], 0,
+        ["GitHub Docs", "Pro Git Book"]),
+      lesson("algoritmos", "Algoritmos e estruturas para entrevistas", "Big O, arrays, hash maps, pilhas, filas, árvores e grafos básicos.", "intermediário", "deep",
+        "Algoritmos treinam raciocínio. Para vagas iniciais, foque em decompor problema, explicar complexidade e escrever solução clara. Python ajuda com listas, dicts, sets e heapq.",
+        "É academia para pensamento lógico.",
+        "def tem_duplicado(nums):\n    vistos = set()\n    for n in nums:\n        if n in vistos:\n            return True\n        vistos.add(n)\n    return False",
+        ["Decorar solução sem entender.", "Ignorar complexidade.", "Não testar casos extremos."],
+        ["Resolva 20 problemas fáceis.", "Explique Big O.", "Refaça sem olhar.", "Escreva testes."],
+        "Usar set para buscar duplicado tende a ser...", ["O(n)", "O(n²) sempre", "Impossível"], 0,
+        ["Python Data Structures", "CPython time complexity wiki"]),
+      lesson("sistemas", "Pensamento de sistemas", "Escalabilidade, filas, cache, consistência e trade-offs.", "avançado", "deep",
+        "Nível pró não é saber ferramenta isolada: é entender trade-offs. Cache melhora latência mas cria invalidação. Fila desacopla mas adiciona atraso. Banco forte exige modelagem e índices.",
+        "É enxergar o mapa, não só a peça.",
+        "Exemplo de decisão:\n- API lenta por consulta repetida\n- Opção A: índice no banco\n- Opção B: cache Redis\n- Opção C: pré-computar relatório\nEscolha depende de frequência, custo, frescor e risco.",
+        ["Escalar antes de medir.", "Adicionar tecnologia sem problema real.", "Ignorar falhas parciais."],
+        ["Desenhe arquitetura de app de tarefas.", "Adicione cache e fila no papel.", "Liste prós/contras.", "Defina métricas."],
+        "Trade-off significa...", ["Troca entre benefícios e custos", "Bug de sintaxe", "Biblioteca Python"], 0,
+        ["PostgreSQL documentation", "Docker docs"]),
+      lesson("capstone", "Projeto final: plataforma completa", "Da ideia ao deploy com API, banco, testes, frontend simples e documentação.", "avançado", "project",
+        "O projeto final deve integrar o curso: Python, API, banco, autenticação, testes, Docker, CI, deploy e README. Escolha algo pequeno o bastante para terminar e bom o bastante para explicar.",
+        "É a peça de formatura: não precisa ser gigante, precisa ser bem acabada.",
+        "Sugestão: Sistema de estudos\n- Usuários\n- Trilhas\n- Aulas\n- Progresso\n- Quiz\n- Dashboard\n- API FastAPI\n- PostgreSQL\n- Docker\n- pytest\n- deploy",
+        ["Escopo grande demais.", "Sem testes.", "Sem deploy.", "Sem documentação de decisões."],
+        ["Defina MVP.", "Implemente em sprints.", "Publique.", "Escreva estudo de caso técnico."],
+        "O melhor projeto final é...", ["Pequeno, completo e explicável", "Gigante e inacabado", "Sem README"], 0,
+        ["FastAPI documentation", "PostgreSQL documentation", "pytest documentation", "Docker Get Started"])
+    ]
+  }
+];
+
+const PLAN = [
+  ["Semanas 1-2", "Lógica, variáveis, tipos, condicionais e loops. Entrega: scripts simples e diário de erros aprendidos."],
+  ["Semanas 3-4", "Funções, coleções, arquivos e JSON. Entrega: gerenciador de tarefas no terminal."],
+  ["Semanas 5-6", "Terminal, venv, Git, GitHub e debug. Entrega: projeto versionado com README e commits pequenos."],
+  ["Semanas 7-8", "Módulos, pacotes, POO e dataclasses. Entrega: sistema bancário ou biblioteca com classes."],
+  ["Semanas 9-10", "Type hints, decorators, generators e qualidade. Entrega: refatoração do projeto anterior com testes manuais."],
+  ["Semanas 11-13", "HTTP, REST, FastAPI e validação. Entrega: API CRUD documentada."],
+  ["Semanas 14-15", "SQL, PostgreSQL e ORM. Entrega: API com banco, migrations e queries úteis."],
+  ["Semanas 16-17", "Automação, Pandas e scraping responsável. Entrega: relatório automatizado com dados reais ou fictícios."],
+  ["Semanas 18-19", "pytest, arquitetura, logging e refatoração. Entrega: API com testes e separação de camadas."],
+  ["Semanas 20-21", "Docker, CI/CD, segurança e deploy. Entrega: aplicação no ar com pipeline básico."],
+  ["Semanas 22-23", "Algoritmos, entrevistas e pensamento de sistemas. Entrega: caderno de problemas resolvidos e revisados."],
+  ["Semana 24", "Projeto final e portfólio. Entrega: case técnico publicado com README, prints, testes e deploy."]
+];
+
+const PROJECTS = [
+  ["Calculadora de vida real", "Conversor, orçamento pessoal, cálculo de média e validações. Foco: variáveis, funções e condicionais."],
+  ["Gerenciador de tarefas CLI", "CRUD no terminal salvando JSON. Foco: funções, arquivos, coleções e erros."],
+  ["Sistema bancário POO", "Conta, cliente, transações e extrato. Foco: classes, dataclasses, testes e organização."],
+  ["API de estudos", "FastAPI, PostgreSQL, autenticação simples e progresso. Foco: backend profissional."],
+  ["Dashboard de dados", "Pandas, gráficos simples e relatório exportado. Foco: dados e automação."],
+  ["Capstone completo", "API + banco + testes + Docker + CI + deploy + README. Foco: portfólio para vaga."]
+];
+
+function lesson(id, title, summary, level, type, concept, analogy, code, mistakes, exercises, quizQuestion, quizOptions, quizAnswer, sources) {
+  return { id, title, summary, level, type, concept, analogy, code, mistakes, exercises, quizQuestion, quizOptions, quizAnswer, sources };
+}
+
+let state = loadState();
+let activeModule = MODULES[0].id;
+let activeLesson = null;
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { done: {}, quiz: {} };
+  } catch {
+    return { done: {}, quiz: {} };
+  }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderProgress();
+}
+
+function allLessons() {
+  return MODULES.flatMap(module => module.lessons.map(lesson => ({ module, lesson })));
+}
+
+function sourceUrl(label) {
+  const normalized = label.toLowerCase();
+  const found = RESOURCES.find(resource => resource.title.toLowerCase().includes(normalized.split(":")[0]) || normalized.includes(resource.title.toLowerCase().split(" ")[0]));
+  if (found) return found.url;
+  const fallback = {
+    "Python Tutorial: Using Python as a Calculator": "https://docs.python.org/3/tutorial/introduction.html",
+    "Python Tutorial: Built-in Types": "https://docs.python.org/3/library/stdtypes.html",
+    "Python Tutorial: More Control Flow Tools": "https://docs.python.org/3/tutorial/controlflow.html",
+    "Python Tutorial: Data Structures": "https://docs.python.org/3/tutorial/datastructures.html",
+    "Python Tutorial: Defining Functions": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+    "Python Tutorial: Errors and Exceptions": "https://docs.python.org/3/tutorial/errors.html",
+    "Python Tutorial: Modules": "https://docs.python.org/3/tutorial/modules.html",
+    "Python Tutorial: Generators": "https://docs.python.org/3/tutorial/classes.html#generators",
+    "Python pathlib docs": "https://docs.python.org/3/library/pathlib.html",
+    "Python venv docs": "https://docs.python.org/3/library/venv.html",
+    "Python dataclasses docs": "https://docs.python.org/3/library/dataclasses.html",
+    "Python typing docs": "https://docs.python.org/3/library/typing.html",
+    "Python logging docs": "https://docs.python.org/3/library/logging.html",
+    "Ruff docs": "https://docs.astral.sh/ruff/",
+    "pandas documentation": "https://pandas.pydata.org/docs/",
+    "Requests docs": "https://requests.readthedocs.io/",
+    "BeautifulSoup docs": "https://www.crummy.com/software/BeautifulSoup/bs4/doc/",
+    "OpenAI docs": "https://platform.openai.com/docs/",
+    "MDN HTTP": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+    "GitHub Actions docs": "https://docs.github.com/actions",
+    "GitHub Docs": "https://docs.github.com/",
+    "Django security docs": "https://docs.djangoproject.com/en/stable/topics/security/",
+    "FastAPI security docs": "https://fastapi.tiangolo.com/tutorial/security/",
+    "FastAPI deployment docs": "https://fastapi.tiangolo.com/deployment/",
+    "Django deployment docs": "https://docs.djangoproject.com/en/stable/howto/deployment/",
+    "CPython time complexity wiki": "https://wiki.python.org/moin/TimeComplexity"
+  };
+  return fallback[label] || "https://docs.python.org/3/";
+}
+
+function renderModules() {
+  const box = document.getElementById("moduleList");
+  box.innerHTML = MODULES.map(module => {
+    const done = module.lessons.filter(lesson => state.done[lesson.id]).length;
+    return `<button class="module-btn ${module.id === activeModule ? "active" : ""}" onclick="selectModule('${module.id}')">
+      <strong>${module.title}</strong>
+      <small>${module.duration} · ${done}/${module.lessons.length} aulas</small>
+    </button>`;
+  }).join("");
+}
+
+function renderCourse() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+  const module = MODULES.find(item => item.id === activeModule) || MODULES[0];
+  const lessons = module.lessons.filter(lesson => {
+    if (!query) return true;
+    return [lesson.title, lesson.summary, lesson.level, lesson.type].join(" ").toLowerCase().includes(query);
+  });
+
+  document.getElementById("courseView").innerHTML = `
+    <div class="module-head">
+      <div>
+        <h2>${module.title}</h2>
+        <p>${module.goal}</p>
+      </div>
+      <span class="pill">${module.duration}</span>
+    </div>
+    ${lessons.length ? `<div class="lesson-grid">${lessons.map(({ id, title, summary, level, type }) => `
+      <article class="lesson ${state.done[id] ? "done" : ""}" onclick="openLesson('${id}')">
+        <div class="pill">${state.done[id] ? "concluída" : "pendente"}</div>
+        <h3>${title}</h3>
+        <p>${summary}</p>
+        <div class="lesson-meta">
+          <span class="tag ${type}">${type}</span>
+          <span class="tag">${level}</span>
+          <span class="tag">${state.quiz[id] ? "quiz feito" : "quiz aberto"}</span>
+        </div>
+      </article>
+    `).join("")}</div>` : `<div class="empty">Nenhuma aula encontrada nessa busca.</div>`}
+  `;
+}
+
+function selectModule(id) {
+  activeModule = id;
+  renderModules();
+  renderCourse();
+}
+
+function openLesson(id) {
+  const item = allLessons().find(entry => entry.lesson.id === id);
+  if (!item) return;
+  activeLesson = item.lesson;
+  const { module, lesson } = item;
+  document.getElementById("lessonPath").textContent = `// ${module.title}`;
+  document.getElementById("lessonTitle").textContent = lesson.title;
+  document.getElementById("lessonBody").innerHTML = `
+    <div class="modal-grid">
+      <article class="article">
+        <p class="quote">${lesson.analogy}</p>
+        <h3>O que você precisa entender</h3>
+        <p>${lesson.concept}</p>
+        <h3>Exemplo prático</h3>
+        <pre><code>${escapeHtml(lesson.code)}</code></pre>
+        <h3>Erros comuns</h3>
+        <ul>${lesson.mistakes.map(item => `<li>${item}</li>`).join("")}</ul>
+        <h3>Exercício guiado</h3>
+        <ol>${lesson.exercises.map(item => `<li>${item}</li>`).join("")}</ol>
+        <h3>Mini quiz</h3>
+        <p><strong>${lesson.quizQuestion}</strong></p>
+        <div id="quizOptions">${lesson.quizOptions.map((option, index) => `
+          <button class="quiz-option ${quizClass(lesson.id, index)}" onclick="answerQuiz('${lesson.id}', ${index})">${option}</button>
+        `).join("")}</div>
+        <p id="quizFeedback">${quizFeedback(lesson)}</p>
+      </article>
+      <aside class="sidebox">
+        <h3>Checklist da aula</h3>
+        <ul>
+          <li>Consigo explicar o conceito em voz alta.</li>
+          <li>Rodei ou adaptei o código.</li>
+          <li>Fiz o exercício sem copiar.</li>
+          <li>Li pelo menos uma fonte.</li>
+        </ul>
+        <h3>Fontes</h3>
+        <ul>${lesson.sources.map(source => `<li><a href="${sourceUrl(source)}" target="_blank" rel="noopener">${source}</a></li>`).join("")}</ul>
+        <button class="primary-btn" style="width:100%;margin-top:10px" onclick="toggleDone('${lesson.id}')">
+          ${state.done[lesson.id] ? "Marcar como pendente" : "Marcar como concluída"}
+        </button>
+      </aside>
+    </div>
+  `;
+  const dialog = document.getElementById("lessonDialog");
+  if (!dialog.open) dialog.showModal();
+}
+
+function closeLesson() {
+  document.getElementById("lessonDialog").close();
+}
+
+function toggleDone(id) {
+  state.done[id] = !state.done[id];
+  saveState();
+  renderModules();
+  renderCourse();
+  openLesson(id);
+}
+
+function answerQuiz(id, chosen) {
+  const lesson = allLessons().find(entry => entry.lesson.id === id).lesson;
+  state.quiz[id] = chosen;
+  saveState();
+  openLesson(id);
+}
+
+function quizClass(id, index) {
+  const item = allLessons().find(entry => entry.lesson.id === id);
+  if (!item || state.quiz[id] === undefined) return "";
+  if (index === item.lesson.quizAnswer) return "correct";
+  if (index === state.quiz[id]) return "wrong";
+  return "";
+}
+
+function quizFeedback(lesson) {
+  if (state.quiz[lesson.id] === undefined) return "Responda para liberar seu feedback visual.";
+  return state.quiz[lesson.id] === lesson.quizAnswer ? "Correto. Agora tente explicar o porquê sem olhar." : "Revise o conceito e tente transformar o erro em anotação de estudo.";
+}
+
+function renderProgress() {
+  const total = allLessons().length;
+  const done = allLessons().filter(({ lesson }) => state.done[lesson.id]).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("progressLabel").textContent = `${pct}%`;
+  document.getElementById("progressBar").style.width = `${pct}%`;
+  document.getElementById("doneLabel").textContent = `${done}/${total}`;
+  const next = allLessons().find(({ lesson }) => !state.done[lesson.id]);
+  document.getElementById("nextFocus").textContent = next ? next.lesson.title : "Curso concluído";
+}
+
+function renderPlan() {
+  document.getElementById("planView").innerHTML = PLAN.map(([week, text]) => `
+    <article class="week"><strong>${week}</strong><p>${text}</p></article>
+  `).join("");
+}
+
+function renderProjects() {
+  document.getElementById("projectView").innerHTML = PROJECTS.map(([title, text]) => `
+    <article class="info-card"><h3>${title}</h3><p>${text}</p></article>
+  `).join("");
+}
+
+function renderResources() {
+  document.getElementById("resourceView").innerHTML = RESOURCES.map(resource => `
+    <article class="resource">
+      <span class="tag">${resource.kind}</span>
+      <h3>${resource.title}</h3>
+      <p>${resource.note}</p>
+      <a href="${resource.url}" target="_blank" rel="noopener">Abrir fonte</a>
+    </article>
+  `).join("");
+}
+
+function switchPanel(panel) {
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.panel === panel));
+  document.querySelectorAll(".panel-section").forEach(section => section.classList.toggle("active", section.id === `panel-${panel}`));
+}
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#039;" }[char]));
+}
+
+document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => switchPanel(tab.dataset.panel)));
+document.getElementById("search").addEventListener("input", renderCourse);
+document.getElementById("resetProgress").addEventListener("click", () => {
+  if (!confirm("Resetar todo o progresso salvo neste navegador?")) return;
+  state = { done: {}, quiz: {} };
+  saveState();
+  renderModules();
+  renderCourse();
+});
+
+renderModules();
+renderCourse();
+renderPlan();
+renderProjects();
+renderResources();
+renderProgress();
+</script>
+</body>
+</html>
