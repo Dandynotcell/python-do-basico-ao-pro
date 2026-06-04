@@ -110,6 +110,44 @@
     transition: width 240ms ease;
   }
 
+  .creator {
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    margin: 18px 0 0;
+    padding: 18px;
+    background: rgba(18, 22, 28, 0.78);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .creator img {
+    width: 116px;
+    height: 116px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(59, 167, 255, 0.5);
+  }
+
+  .creator h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+  }
+
+  .creator p {
+    margin: 0;
+    color: var(--soft);
+    line-height: 1.7;
+  }
+
+  .creator-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
   .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -430,11 +468,12 @@
   .empty { color: var(--soft); padding: 24px; text-align: center; }
 
   @media (max-width: 900px) {
-    .hero, .layout, .modal-grid { grid-template-columns: 1fr; }
+    .hero, .layout, .modal-grid, .creator { grid-template-columns: 1fr; }
     .sidebar { position: static; max-height: none; }
     .lesson-grid, .cards, .resource-list { grid-template-columns: 1fr; }
     .module-head { display: block; }
     .week { grid-template-columns: 1fr; }
+    .creator img { width: 96px; height: 96px; }
   }
 </style>
 </head>
@@ -456,6 +495,23 @@
       <div class="stat-line"><span>Aulas concluídas</span><strong id="doneLabel">0/0</strong></div>
       <div class="stat-line"><span>Próximo foco</span><strong id="nextFocus">Fundamentos</strong></div>
     </aside>
+  </section>
+
+  <section class="creator" aria-label="Sobre o criador">
+    <img src="https://github.com/Dandynotcell.png" alt="Foto de Anderson Ricardo G Amaral">
+    <div>
+      <div class="eyebrow">// Sobre o criador</div>
+      <h2>Anderson Ricardo G Amaral</h2>
+      <p>
+        Estudante de Python e Inteligência Artificial, construindo projetos práticos para aprender programação,
+        automação, desenvolvimento web e ferramentas modernas. Este roadmap é parte da minha jornada: usar IA
+        como apoio, estudar o código com atenção e transformar aprendizado em projetos publicados.
+      </p>
+      <div class="creator-links">
+        <a class="pill" href="https://github.com/Dandynotcell" target="_blank" rel="noopener">GitHub</a>
+        <a class="pill" href="https://dandynotcell.github.io/python-do-basico-ao-pro/" target="_blank" rel="noopener">Projeto online</a>
+      </div>
+    </div>
   </section>
 
   <nav class="toolbar" aria-label="Navegação principal">

@@ -2,6 +2,8 @@
 
 Curso interativo em HTML, CSS e JavaScript para guiar iniciantes em uma jornada de programação com Python: fundamentos, ferramentas profissionais, POO, APIs, banco de dados, dados, automação, testes, deploy, segurança e portfólio.
 
+Criado por Anderson Ricardo G Amaral, estudante de Python e Inteligência Artificial, como projeto de aprendizado, prática e portfólio.
+
 ## Objetivo
 
 Transformar um roadmap de estudos em uma experiência prática, com aulas clicáveis, progresso salvo no navegador, exercícios, quizzes, projetos e fontes confiáveis.
@@ -62,4 +64,3 @@ Primeira versão funcional. Próximos passos possíveis:
 - Adicionar modo escuro/claro.
 - Criar versão em React.
 - Adicionar exercícios corrigíveis automaticamente.
-
